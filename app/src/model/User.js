@@ -20,6 +20,11 @@ class User
 
 		return { success: false, msg: 'no id' };
 	}
+
+	register = function() {
+		UserStorage.save(this.body);
+		return { success: true };
+	}
 }
 
 module.exports = User;

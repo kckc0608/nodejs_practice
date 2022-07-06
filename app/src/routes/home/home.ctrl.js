@@ -9,12 +9,22 @@ const output = {
 	login: function(req, res) {
 		res.render('home/login');
 	},
+	register: function(req, res) {
+		res.render('home/register');	
+	},
 };
 
 const process = {
 	login: function(req, res) {
 		const user = new User(req.body);
 		const response = user.login();
+		
+		return res.json(response);
+	},
+
+	register: function(req, res) {
+		const user = new User(req.body);
+		const response = user.register();
 		
 		return res.json(response);
 	},
