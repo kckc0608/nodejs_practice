@@ -6,8 +6,8 @@ class UserStorage
 {
 	static users;
 
-	static getUsers = function(...args) {
-		//const users = this.#users;
+	static #getUsers = function(data, args) {
+		const users = JSON.parse(data);
 		const newUsers = args.reduce(
 			(acc, cur) => {
 				if (users.hasOwnProperty(cur)) {
@@ -18,6 +18,15 @@ class UserStorage
 			{} // ÃÊ±â¿¡ Á¸ÀçÇÒ °ª = ºó °´Ã¼
 		);
 		return newUsers;
+	};
+
+	static getUsers = function(...args) {
+		return fs
+			.readFile('./src/database/user.json')
+			.then((data) => {
+				return this.#getUsers(data, args);
+			})
+			.catch(console.err);
 	}
 
 	static getUserInfo = function(id) {
@@ -36,12 +45,13 @@ class UserStorage
 		.catch((err) => console.error(err));
 	}
 
-	static save = function(userInfo) {
-		//const users = this.#users;
+	static save = async function(userInfo) {
+		const users = await this.getUsers("id", "pw", "name");
 		users.id.push(userInfo.id);
 		users.pw.push(userInfo.pw);
 		users.name.push(userInfo.name);
-		console.log(users);
+		fs.writeFile('./src/database/user.json', JSON.stringify(users));
+		return {success: true};
 	}
 }
 

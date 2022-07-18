@@ -21,9 +21,9 @@ class User
 		return { success: false, msg: 'no id' };
 	}
 
-	register = function() {
-		UserStorage.save(this.body);
-		return { success: true };
+	register = async function() {
+		const response = await UserStorage.save(this.body);
+		return response;
 	}
 }
 
